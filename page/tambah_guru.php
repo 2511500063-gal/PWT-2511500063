@@ -1,37 +1,66 @@
 <div class="content-header">
-  <div class="container-fluid">
-    <div class="row mb-2">
-      <div class="col-sm-6">
-        <h1 class="m-0 text-dark">Data Kelas</h1>
-      </div>
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Tambah Guru</h1>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
+
 <?php
-//kode otomatis
-$carikode = mysqli_query($koneksi,"select max(Id_kelas) from kelas") or die (
-    mysqli_error($koneksi));
-$datakode = mysqli_fetch_array($carikode);
-if($datakode) {
-    $nilaikode = substr($datakode[0], 0);
-    $kode = (int) $nilaikode;
-    $kode = $kode + 1;
-    $hasilkode = str_pad($kode, 3, "0", STR_PAD_LEFT);
-} else {$hasilkode = "001"; }
-$_SESSION['KODE'] = $hasilkode;
+// AUTO KODE GURU 
+$query = mysqli_query($koneksi, "SELECT MAX(Kd_guru) as kodeTerbesar FROM guru");
+$data = mysqli_fetch_array($query);
 
-if(isset($_POST['tambah'])) {
-    $Id_kelas = $_POST['Id_kelas'];
-    $Nm_kelas = $_POST['Nm_kelas'];
+$kodeGuru = $data['kodeTerbesar'];
 
-    $insert = mysqli_query($koneksi,"INSERT INTO kelas values ('$Id_kelas','$Nm_kelas')");
+if ($kodeGuru) {
+    $urutan = (int) substr($kodeGuru, 1, 3);
+    $urutan++;
+} else {
+    $urutan = 1;
+}
+
+$kodeGuru = "G" . sprintf("%03d", $urutan);
+
+// PROSES SIMPAN
+if(isset($_POST['tambah'])){
+    $Kd_guru = $kodeGuru;
+    $Nm_guru = $_POST['Nm_guru'];
+    $Jenkel = $_POST['Jenkel'];
+    $Pend_terakhir = $_POST['Pend_terakhir'];
+    $Hp = $_POST['Hp'];
+    $Alamat = $_POST['Alamat'];
+
+    $Password = '12345'; // ✅  PASSWORD
+
+    $insert = mysqli_query($koneksi,"INSERT INTO guru 
+    (Kd_guru, Nm_guru, Jenkel, Pend_terakhir, Hp, Alamat, password) 
+    VALUES (
+        '$Kd_guru',
+        '$Nm_guru',
+        '$Jenkel',
+        '$Pend_terakhir',
+        '$Hp',
+        '$Alamat',
+        '$Password'
+    )");
+
+     $username = $_POST['username'];
+    $password = $_POST['password'];
+    $role = "guru";
+
+    $insert = mysqli_query($koneksi,"INSERT INTO guru values ('$Kd_guru','$Nm_guru','$Jenkel','$Pend_terakhir','$Hp','$Alamat')");
+
+    $insert = mysqli_query($koneksi,"INSERT INTO user (username, password, role) values ('$username','$password','$role')");
     if ($insert) {
         echo '<div class="alert alert-success alert-dismissible">
         <button type="button" class="close" data-dismiss="alert"
         aria-hidden="true">×</button>
         <h5><i class="icon fas fa-info"></i> Info </h5>
         <h4>Berhasil Disimpan</h4></div>';
-        echo '<meta http-equiv="refresh" content="1;url=index.php?page=kelas">';
+        echo '<meta http-equiv="refresh" content="1;url=index.php?page=guru">';
     } else {
         echo '<div class="alert alert-warning alert-dismissible">
         <button type="button" class="close" data-dismiss="alert"
@@ -40,26 +69,65 @@ if(isset($_POST['tambah'])) {
         <h4>Gagal Disimpan</h4></div>';
     }
 }
+
 ?>
+
 <section class="content">
     <div class="container-fluid">
         <div class="card">
             <div class="card-body">
                 <div class="card-body p-2">
                     <form method="POST" action="">
-                        <div class="form-group">
-                            <label for="Id_kelas">Id Kelas</label>
-                            <input type="text" name="Id_kelas" value="<?= $hasilkode; ?>" placeholder="Id Kelas" class="form-control" readonly>
-                        </div>
                         
                         <div class="form-group">
-                            <label for="Nm_kelas">Nama Kelas</label>
-                            <input type="text" name="Nm_kelas" id="Nm_kelas" placeholder="Nama Kelas" class="form-control">
+                            <label>Kd Guru</label>
+                            <!-- FIX DI SINI -->
+                            <input type="text" name="Kd_guru" value="<?= $kodeGuru; ?>" class="form-control" readonly>
                         </div>
 
-                        <div class="card-footer">
-                            <input type="submit" class="btn btn-primary" name="tambah" value="simpan">
+                        <div class="form-group">
+                            <label>Nama Guru</label>
+                            <input type="text" name="Nm_guru" class="form-control">
                         </div>
+
+                        <div class="form-group">
+                            <label>Jenis Kelamin</label>
+                            <select name="Jenkel" class="form-control">
+                                <option value="L">Laki-laki</option>
+                                <option value="P">Perempuan</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Pendidikan Terakhir</label>
+                            <input type="text" name="Pend_terakhir" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label>No HP</label>
+                            <input type="text" name="Hp" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Alamat</label>
+                            <textarea name="Alamat" class="form-control"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" name="username" id="username" placeholder="Username" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" name="password" id="password" placeholder="Password" class="form-control">
+                        </div>
+
+
+                        <div class="card-footer">
+                            <input type="submit" class="btn btn-primary" name="tambah" value="Simpan">
+                        </div>
+
                     </form>
                 </div>
             </div>

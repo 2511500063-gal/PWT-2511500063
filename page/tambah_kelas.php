@@ -1,74 +1,59 @@
 <div class="content-header">
-  <div class="container-fluid">
-    <div class="row mb-2">
-      <div class="col-sm-6">
-        <h1 class="m-0 text-dark">Data Mata Pelajaran</h1>
-      </div>
-    </div>
-  </div>
-</div>
-<?php
-//kode otomatis
-$carikode = mysqli_query($koneksi,"select max(Kd_mapel) from mapel") or die (
-    mysqli_error());
-$datakode = mysqli_fetch_array($carikode);
-if($datakode) {
-    $nilaikode = substr($datakode[0], 2);
-    $kode = (int) $nilaikode;
-    $kode = $kode + 1;
-    $hasilkode = "M-".str_pad($kode, 3, "0", STR_PAD_LEFT);
-} else {$hasilkode = "M-"; }
-$_SESSION['KODE'] = $hasilkode;
-
-if(isset($_POST['tambah'])) {
-    $Kd_mapel = $_POST['Kd_mapel'];
-    $Nm_mapel = $_POST['Nm_mapel'];
-    $Kkm = $_POST['Kkm'];
-
-    $insert = mysqli_query($koneksi,"INSERT INTO mapel values ('$Kd_mapel','$Nm_mapel','$Kkm')");
-    if ($insert) {
-        echo '<div class="alert alert-success alert-dismissible">
-        <button type="button" class="close" data-dismiss="alert"
-        aria-hidden="true">×</button>
-        <h5><i class="icon fas fa-info"></i> Info </h5>
-        <h4>Berhasil Disimpan</h4></div>';
-        echo '<meta http-equiv="refresh" content="1;url=index.php?page=mapel">';
-    } else {
-        echo '<div class="alert alert-warning alert-dismissible">
-        <button type="button" class="close" data-dismiss="alert"
-        aria-hidden="true">×</button>
-        <h5><i class="icon fas fa-info"></i> Info </h5>
-        <h4>Gagal Disimpan</h4></div>';
-    }
-}
-?>
-<section class="content">
     <div class="container-fluid">
-        <div class="card">
-            <div class="card-body">
-                <div class="card-body p-2">
-                    <form method="POST" action="">
-                        <div class="form-group">
-                            <label for="Kd_mapel">Kode Mapel</label>
-                            <input type="text" name="Kd_mapel" value="<?= $hasilkode; ?>" placeholder="Id Kat" class="form-control" readonly>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="Nm_mapel">Nama Mapel</label>
-                            <input type="text" name="Nm_mapel" id="Nm_mapel" placeholder="Nama Mapel" class="form-control">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="Kkm">KKM</label>
-                            <input type="text" name="Kkm" id="Kkm" placeholder="Kkm" class="form-control">
-                        </div>
-
-                        <div class="card-footer">
-                            <input type="submit" class="btn btn-primary" name="tambah" value="simpan">
-                        </div>
-                    </form>
-                </div>
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Edit Kelas</h1>
             </div>
         </div>
     </div>
-</section>
+</div>
+
+    <?php
+    $kd = $_GET['kd'];
+    $edit = mysqli_fetch_array(mysqli_query($koneksi,"SELECT * FROM kelas WHERE Id_kelas='$kd'"));
+
+    if(isset($_POST['tambah'])){
+        $Id_kelas = $_POST['Id_kelas'];
+        $Nm_kelas = $_POST['Nm_kelas'];
+
+        $insert = mysqli_query($koneksi,"UPDATE kelas SET Nm_kelas='$Nm_kelas' WHERE Id_kelas='$Id_kelas'");
+        if ($insert) {
+            echo '<div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert"
+            aria-hidden="true">×</button>
+            <h5><i class="icon fas fa-info"></i> Info </h5>
+            <h4>Berhasil Disimpan</h4></div>';
+            echo '<meta http-equiv="refresh" content="1;url=index.php?page=kelas">';
+        } else {
+            echo '<div class="alert alert-warning alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert"
+            aria-hidden="true">×</button>
+            <h5><i class="icon fas fa-info"></i> Info </h5>
+            <h4>Gagal Disimpan</h4></div>';
+        }
+    }
+    ?>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-body p-2">
+                        <form method="POST" action="">
+                            <div class="form-group">
+                                <label for="Id_kelas">Id Kelas</label>
+                                <input type="text" name="Id_kelas" value="<?= $edit['Id_kelas']; ?>" class="form-control" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="Nm_kelas">Nama Kelas</label>
+                                <input type="text" name="Nm_kelas" value="<?= $edit['Nm_kelas']; ?>" id="Nm_kelas" placeholder="Nama kelas" class="form-control">
+                            </div>
+                            <div class="card-footer">
+                                <input type="submit" class="btn btn-primary" name="tambah" value="simpan">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
