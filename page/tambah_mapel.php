@@ -1,102 +1,74 @@
-<?php
-// pastikan session aktif
-if (session_status() == PHP_SESSION_NONE) {
-  session_start();
-}
-
-// koneksi database
-$koneksi = mysqli_connect("localhost", "root", "", "jadwal");
-
-if (!$koneksi) {
-  die("Koneksi gagal: " . mysqli_connect_error());
-}
-
-// ================== AUTO KODE ==================
-$cari_kode = mysqli_query($koneksi, "SELECT MAX(kd_mapel) FROM mapel") or die(mysqli_error($koneksi));
-$data_kode = mysqli_fetch_array($cari_kode);
-
-if ($data_kode && $data_kode[0] != NULL) {
-  $nilaikode = substr($data_kode[0], 2);
-  $kode = (int) $nilaikode;
-  $kode++;
-  $hasilkode = "M-" . str_pad($kode, 3, "0", STR_PAD_LEFT);
-} else {
-  $hasilkode = "M-001";
-}
-
-$_SESSION['KODE'] = $hasilkode;
-
-// ================== PROSES SIMPAN ==================
-if (isset($_POST['tambah'])) {
-
-  // ambil & amankan input
-  $kd_mapel = mysqli_real_escape_string($koneksi, $_POST['kd_mapel']);
-  $nm_mapel = mysqli_real_escape_string($koneksi, $_POST['nm_mapel']);
-  $kkm      = mysqli_real_escape_string($koneksi, $_POST['kkm']);
-
-  // validasi sederhana
-  if ($nm_mapel == "" || $kkm == "") {
-    echo '<div class="alert alert-warning">Data tidak boleh kosong!</div>';
-  } else {
-
-    $insert = mysqli_query($koneksi, 
-      "INSERT INTO mapel (kd_mapel, nm_mapel, kkm) 
-       VALUES ('$kd_mapel','$nm_mapel','$kkm')"
-    );
-
-    if ($insert) {
-      echo '<div class="alert alert-success">Berhasil Disimpan</div>';
-      echo '<meta http-equiv="refresh" content="1;url=index.php?page=mapel">';
-    } else {
-      echo '<div class="alert alert-danger">Gagal: ' . mysqli_error($koneksi) . '</div>';
-    }
-  }
-}
-?>
-
-<!-- ================== HTML ================== -->
-
 <div class="content-header">
   <div class="container-fluid">
-    <h1 class="m-0 text-dark">Data Mata Pelajaran</h1>
-  </div>
-</div>
-
-<section class="content">
-  <div class="container-fluid">
-    <div class="card">
-      <div class="card-body">
-
-        <form method="POST">
-
-          <div class="form-group">
-            <label>Kode Mapel</label>
-            <input type="text" name="kd_mapel" 
-                   value="<?= $hasilkode; ?>" 
-                   class="form-control" readonly>
-          </div>
-
-          <div class="form-group">
-            <label>Nama Mapel</label>
-            <input type="text" name="nm_mapel" 
-                   placeholder="Nama Mapel" 
-                   class="form-control" required>
-          </div>
-
-          <div class="form-group">
-            <label>KKM</label>
-            <input type="number" name="kkm" 
-                   placeholder="KKM" 
-                   class="form-control" required>
-          </div>
-
-          <button type="submit" name="tambah" class="btn btn-primary">
-            Simpan
-          </button>
-
-        </form>
-
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0 text-dark">Data Mata Pelajaran</h1>
       </div>
     </div>
   </div>
+</div>
+<?php
+//kode otomatis
+$carikode = mysqli_query($koneksi,"select max(Kd_mapel) from mapel") or die (
+    mysqli_error());
+$datakode = mysqli_fetch_array($carikode);
+if($datakode) {
+    $nilaikode = substr($datakode[0], 2);
+    $kode = (int) $nilaikode;
+    $kode = $kode + 1;
+    $hasilkode = "M-".str_pad($kode, 3, "0", STR_PAD_LEFT);
+} else {$hasilkode = "M-"; }
+$_SESSION['KODE'] = $hasilkode;
+
+if(isset($_POST['tambah'])) {
+    $Kd_mapel = $_POST['Kd_mapel'];
+    $Nm_mapel = $_POST['Nm_mapel'];
+    $Kkm = $_POST['Kkm'];
+
+    $insert = mysqli_query($koneksi,"INSERT INTO mapel values ('$Kd_mapel','$Nm_mapel','$Kkm')");
+    if ($insert) {
+        echo '<div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert"
+        aria-hidden="true">×</button>
+        <h5><i class="icon fas fa-info"></i> Info </h5>
+        <h4>Berhasil Disimpan</h4></div>';
+        echo '<meta http-equiv="refresh" content="1;url=index.php?page=mapel">';
+    } else {
+        echo '<div class="alert alert-warning alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert"
+        aria-hidden="true">×</button>
+        <h5><i class="icon fas fa-info"></i> Info </h5>
+        <h4>Gagal Disimpan</h4></div>';
+    }
+}
+?>
+<section class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-body p-2">
+                    <form method="POST" action="">
+                        <div class="form-group">
+                            <label for="Kd_mapel">Kode Mapel</label>
+                            <input type="text" name="Kd_mapel" value="<?= $hasilkode; ?>" placeholder="Id Kat" class="form-control" readonly>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="Nm_mapel">Nama Mapel</label>
+                            <input type="text" name="Nm_mapel" id="Nm_mapel" placeholder="Nama Mapel" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Kkm">KKM</label>
+                            <input type="text" name="Kkm" id="Kkm" placeholder="Kkm" class="form-control">
+                        </div>
+
+                        <div class="card-footer">
+                            <input type="submit" class="btn btn-primary" name="tambah" value="simpan">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>

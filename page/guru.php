@@ -1,99 +1,74 @@
+<div class="content-header">
+    <div class="container-fluid">
+        <div class ="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Data Guru</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php
-// ================= DELETE DATA =================
-if (isset($_GET['action']) && $_GET['action'] == "hapus") {
-
-    $kd = mysqli_real_escape_string($koneksi, $_GET['kd']);
-
-    $hapus = mysqli_query($koneksi,
-        "DELETE FROM guru WHERE kd_guru = '$kd'"
-    );
-
-    if ($hapus) {
-        echo "<script>
-            alert('Data berhasil dihapus');
-            window.location='index.php?page=guru';
-        </script>";
-    } else {
-        echo "<div class='alert alert-danger'>
-            Gagal hapus: " . mysqli_error($koneksi) . "
-        </div>";
+if(isset($_GET['action'])) {
+    if($_GET['action'] == "hapus") {
+        $kd =$_GET['kd'];
+        $query = mysqli_query($koneksi, "DELETE FROM guru where Kd_guru = '$kd'");
+        if ($query){
+            echo '
+            <div class="alert alert-warning alert-dismissible">
+            Berhasil Di Hapus</div>';
+            echo '<meta http-equiv="refresh" content="1;url=index.php?page=guru">';
+        }
     }
 }
 ?>
-
-<!-- HEADER -->
-<div class="content-header">
-  <div class="container-fluid">
-    <h1 class="m-0 text-dark">Data Guru</h1>
-  </div>
-</div>
-
-<!-- CONTENT -->
-<div class="container-fluid">
-  <div class="card">
-    <div class="card-body">
-
-      <!-- BUTTON TAMBAH -->
-      <a href="index.php?page=tambah_guru" class="btn btn-primary btn-sm mb-3">
-        Tambah Guru
-      </a>
-
-      <!-- TABLE -->
-      <table class="table table-bordered table-striped">
-        <thead>
-          <tr>
-            <th>No</th>
-            <th>Kode Guru</th>
-            <th>Nama Guru</th>
-            <th>Jenis Kelamin</th>
-            <th>Pendidikan</th>
-            <th>No HP</th>
-            <th>Alamat</th>
-            <th>Aksi</th>
-          </tr>
-        </thead>
-
-        <tbody>
-        <?php
-        $no = 1;
-        $query = mysqli_query($koneksi, "SELECT * FROM guru");
-
-        if (!$query) {
-            die("Query error: " . mysqli_error($koneksi));
-        }
-
-        while ($result = mysqli_fetch_assoc($query)) {
-        ?>
-          <tr>
-            <td><?= $no++; ?></td>
-            <td><?= $result['kd_guru']; ?></td>
-            <td><?= $result['nm_guru']; ?></td>
-            <td><?= $result['jenkel']; ?></td>
-            <td><?= $result['pend_terakhir']; ?></td>
-            <td><?= $result['hp']; ?></td>
-            <td><?= $result['alamat']; ?></td>
-            <td>
-
-              <!-- EDIT -->
-              <a href="index.php?page=edit_guru&kd=<?= $result['kd_guru']; ?>" 
-                 class="btn btn-warning btn-sm">
-                Edit
-              </a>
-
-              <!-- HAPUS -->
-              <a href="index.php?page=guru&action=hapus&kd=<?= $result['kd_guru']; ?>" 
-                 class="btn btn-danger btn-sm"
-                 onclick="return confirm('Yakin ingin menghapus data ini?')">
-                Hapus
-              </a>
-
-            </td>
-          </tr>
-        <?php } ?>
-        </tbody>
-
-      </table>
-
+<div class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <a href="index.php?page=tambah_guru" class="btn btn-primary btn-sm">
+            Tambah Mapel</a>
+            <table class="table table-striped">
+                <tread>
+                    <tr>
+                        <th>NO</th>
+                        <th>Kd Guru</th>
+                        <th>Nama Guru</th>
+                        <th>Jenkel</th>
+                        <th>Pendidikan Terakhir</th>
+                        <th>Hp</th>
+                        <th>Alamat</th>
+                        <th>Aksi</th>
+                    </tr>
+                </tread>
+                <?php
+                $no =0;
+                $query = mysqli_query($koneksi,"SELECT * FROM guru");
+                while ($result = mysqli_fetch_array($query) ) {
+                    $no++
+                    ?>
+                    <tbody>
+                        <tr>
+                            <td><?= $no;?></td>
+                            <td><?=$result['Kd_guru']; ?></td>
+                            <td><?=$result['Nm_guru']; ?></td>
+                            <td><?=$result['Jenkel']; ?></td>
+                            <td><?=$result['Pend_terakhir']; ?></td>
+                            <td><?=$result['Hp']; ?></td>
+                            <td><?=$result['Alamat']; ?></td>
+                             <td>
+                                <a href="index.php?page=guru&action=hapus&kd=<?=  $result['Kd_guru']
+                                ?>" title="">
+                                <span class="badge badge-danger">Hapus</span></a>
+                                <a href="index.php?page=edit_guru&kd=<?= $result['Kd_guru'] ?>" title
+                                =""><span class
+                                ="badge badge-warning">Edit</span><a>
+                             </td>
+                        </tr>
+                    </tbody>
+                <?php } ?>
+            </table>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
