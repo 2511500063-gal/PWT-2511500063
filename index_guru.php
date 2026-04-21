@@ -77,7 +77,7 @@ if (isset($_SESSION['Username'])) {
         </div>
 
         <div class="info">
-          <a href="#" class="d-block">Nayaka Jibran</a>
+          <a href="#" class="d-block">Delpiah Wahyuningsih</a>
         </div>
       </div>
 
