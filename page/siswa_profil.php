@@ -1,25 +1,27 @@
 <?php
-session_start();
 require_once("config/koneksi.php");
 
-if (!isset($_SESSION['Username'])) {
-    header("Location: login.php");
+if (!isset($_SESSION['Kd_siswa'])) {
+    echo "<div class='alert alert-danger'>Session siswa tidak ditemukan</div>";
     exit;
 }
 
-$username = $_SESSION['Username'];
+$id = $_SESSION['Kd_siswa'];
 
-// Gunakan prepared statement
-$stmt = mysqli_prepare($koneksi, "SELECT * FROM siswa WHERE username = ?");
-mysqli_stmt_bind_param($stmt, "s", $username);
+$stmt = mysqli_prepare($koneksi, "SELECT * FROM siswa WHERE Kd_siswa = ?");
+
+if (!$stmt) {
+    die("Query error: " . mysqli_error($koneksi));
+}
+
+mysqli_stmt_bind_param($stmt, "s", $id);
 mysqli_stmt_execute($stmt);
 
 $result = mysqli_stmt_get_result($stmt);
 $data = mysqli_fetch_assoc($result);
 
-// Cek apakah data ditemukan
 if (!$data) {
-    echo "<div class='alert alert-danger'>Data tidak ditemukan</div>";
+    echo "<div class='alert alert-danger'>Data siswa tidak ditemukan</div>";
     exit;
 }
 ?>

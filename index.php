@@ -113,6 +113,12 @@ if(!isset($_SESSION['Username'])){
 
             <ul class="nav nav-treeview">
               <li class="nav-item">
+                <a href="index.php?page=ganti_password" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Ganti Password</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="index.php?page=guru" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Guru</p>
@@ -137,67 +143,6 @@ if(!isset($_SESSION['Username'])){
                 <a href="index.php?page=mapel" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Mapel</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-
-          <!-- MENU GURU -->
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-chalkboard-teacher"></i>
-              <p>
-                GURU
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="index_guru.php?page=guru_profil" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Profil</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a href="guru_kelas.php" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Kelas</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a href="guru_jadwal.php" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Jadwal</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-
-          <!-- MENU SISWA -->
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-user-graduate"></i>
-              <p>
-                SISWA
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="siswa_profil.php" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Profil</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a href="siswa_jadwal.php" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Jadwal</p>
                 </a>
               </li>
             </ul>

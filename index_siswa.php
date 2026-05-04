@@ -2,12 +2,12 @@
 session_start();
 require_once("config/koneksi.php");
 
-if(!isset($_SESSION['Username'])){
+if (!isset($_SESSION['Username']) || !isset($_SESSION['Role'])) {
     header("Location: login.php");
     exit;
 }
 
-if($_SESSION['Role'] != "siswa"){
+if ($_SESSION['Role'] != "siswa") {
     die("Akses ditolak");
 }
 ?>
@@ -124,7 +124,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="index_siswa.php?page=siswa_profil.php" class="nav-link">
+                <a href="index_siswa.php?page=siswa_profil" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Profil</p>
                 </a>
