@@ -72,38 +72,54 @@
 </body>
 </html>
 
+<?php if(isset($_GET['msg']) && $_GET['msg']=="logout"): ?>
+    <div class="alert alert-success" id="logoutAlert">
+        Berhasil logout
+    </div>
+
+    <script>
+        if(window.history.replaceState){
+            window.history.replaceState(null,null,window.location.pathname);
+        }
+
+        setTimeout(()=>{
+            document.getElementById("logoutAlert").style.display="none";
+        },3000);
+    </script>
+<?php endif; ?>
+
 <?php
     if(isset($_POST['login'])) {
-        $username = $_POST['username']; 
-        $password = $_POST['password'];
+    $username = $_POST['username']; 
+    $password = $_POST['password'];
 
-        if(empty($username) || empty($password)) {
-            echo "Data Tidak Boleh kosong";
-        } else {
-            $query = mysqli_query($koneksi, "SELECT * FROM user WHERE username = '$username' AND password = '$password' ");
-            $data = mysqli_fetch_array($query);
-            if($data) {
-                $_SESSION['Username'] = $data['username'];
-                $_SESSION['level'] = $data['role'];
+    if(empty($username) || empty($password)) {
+        echo "Data Tidak Boleh kosong";
+    } else {
 
-                $role = $data['role'];
-                
-                if($role == "admin") {
+        $query = mysqli_query($koneksi,
+            "SELECT * FROM user WHERE username='$username' AND password='$password'"
+        );
+
+        $data = mysqli_fetch_array($query);
+
+        if($data) {
+
+            $_SESSION['Username'] = $data['username'];
+            $_SESSION['Role'] = $data['role']; // PENTING
+
+            if($data['role'] == "admin") {
                 header("location:index.php");
-                } elseif($role == "guru") {
+            } 
+            elseif($data['role'] == "guru") {
                 header("location:index_guru.php");
-                } elseif($role == "siswa") {
+            } 
+            elseif($data['role'] == "siswa") {
                 header("location:index_siswa.php");
-                }
-                
-            } else {
-                echo '<div class="alert alert-danger alert-dismissible">
-                    <button type="button" class="close" data-dismiss="alert"
-                    aria-hidden="true">x</button>
-                    <h5><i class="icon fas fa-ban"></i> Alert!</h5>
-                    Login gagal
-                </div>';
             }
+
+        } else {
+            echo '<div class="alert alert-danger">Login gagal</div>';
         }
     }
-?>
+}

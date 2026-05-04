@@ -1,8 +1,13 @@
 <?php
 session_start();
 require_once("config/koneksi.php");
-if (isset($_SESSION['Username'])) {
+
+if(!isset($_SESSION['Username'])){
+    header("Location: login.php");
+    exit;
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -115,7 +120,7 @@ if (isset($_SESSION['Username'])) {
               </li>
 
               <li class="nav-item">
-                <a href="siswa.php" class="nav-link">
+                <a href="index.php?page=siswa" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Siswa</p>
                 </a>
@@ -149,7 +154,7 @@ if (isset($_SESSION['Username'])) {
 
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="guru_profil.php" class="nav-link">
+                <a href="index_guru.php?page=guru_profil" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Profil</p>
                 </a>
@@ -325,8 +330,3 @@ if (isset($_SESSION['Username'])) {
 </body>
 </html>
 
-<?php
-} else {
-  echo "<meta http-equiv='refresh' content='0; url=login.php'>";
-}
-?>

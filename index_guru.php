@@ -2,7 +2,12 @@
 session_start();
 require_once("config/koneksi.php");
 if (isset($_SESSION['Username'])) {
+  if($_SESSION['Role'] != "guru"){
+    die("Akses ditolak");
+}
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -108,21 +113,21 @@ if (isset($_SESSION['Username'])) {
 
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="guru_profil.php" class="nav-link">
+                <a href="index_guru.php?page=guru_profil" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Profil</p>
                 </a>
               </li>
 
               <li class="nav-item">
-                <a href="guru_kelas.php" class="nav-link">
+                <a href="index_guru.php?page=guru_kelas" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Kelas</p>
                 </a>
               </li>
 
               <li class="nav-item">
-                <a href="guru_jadwal.php" class="nav-link">
+                <a href="index_guru.php?page=guru_jadwal" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Jadwal</p>
                 </a>
@@ -143,7 +148,7 @@ if (isset($_SESSION['Username'])) {
 
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="jadwal.php" class="nav-link">
+                <a href="index_guru.php?page=jadwal" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Jadwal</p>
                 </a>

@@ -1,8 +1,17 @@
 <?php
-  session_start();
-  require_once("config/koneksi.php");
-  if(isset($_SESSION['Username'])){
+session_start();
+require_once("config/koneksi.php");
+
+if(!isset($_SESSION['Username'])){
+    header("Location: login.php");
+    exit;
+}
+
+if($_SESSION['Role'] != "siswa"){
+    die("Akses ditolak");
+}
 ?>
+
 <!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -115,13 +124,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="index_siswa.php?page=siswa_profil.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Profil</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="index_siswa.php?page=siswa_jadwal" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Jadwal</p>
                 </a>
@@ -256,8 +265,3 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="dist/js/adminlte.min.js"></script>
 </body>
 </html>
-<?php
-  }else{
-      echo "<meta http-equiv='refresh' content='0 url =login.php'>";
-  }
-?>
