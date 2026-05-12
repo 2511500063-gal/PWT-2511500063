@@ -5,7 +5,7 @@
 </div>
 
 <?php
-// ===================== AUTO KODE =====================
+
 $carikode = mysqli_query(
     $koneksi,
     "SELECT MAX(id_ekstra) AS kode FROM ekstra_2511500063"
@@ -24,7 +24,7 @@ if (!empty($datakode['kode'])) {
     $hasilkode = "E-001";
 }
 
-// ===================== INSERT DATA =====================
+
 if (isset($_POST['tambah'])) {
 
     $id_ekstra   = $_POST['id_ekstra'];
