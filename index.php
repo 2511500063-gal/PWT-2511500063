@@ -166,7 +166,7 @@ if(!isset($_SESSION['Username'])){
 
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="jadwal.php" class="nav-link">
+                <a href="index.php?page=jadwal" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Jadwal</p>
                 </a>
